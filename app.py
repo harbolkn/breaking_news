@@ -31,12 +31,15 @@ def data():
 def get_latlon_from_city():
     try:
         city = request.args.get('city')
-        req = requests.get('http://nominatim.openstreetmap.org?format=json&city='+city)
-        j = json.loads(req.text)
-        latlon = [j[0]['lat'], j[0]['lon']]
-        return city + "," + j[0]['lat'] + "," + j[0]['lon']
+        lat, lon = _get_latlon_from_city(city)
+        return city + "," + lat + "," + lon
     except Exception:
         return ","
+
+def _get_latlon_from_city(city):
+        req = requests.get('http://nominatim.openstreetmap.org?format=json&limit=1&city='+city)
+        j = json.loads(req.text)
+        return j[0]['lat'], j[0]['lon']
 
 if __name__ == "__main__":
     app.run()
