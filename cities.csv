@@ -1,0 +1,48 @@
+name, api_name, lat, lon
+shanghai,cn-23-shanghai
+beijing,cn-22-beijing
+tianjin,cn-28-tianjin
+hong kong,
+delhi,in-07-delhi
+mumbai
+bangalore
+chennai
+karachi,
+islamabad,pk-08-islamabad
+moscow,ru-48-moscow
+seoul
+jakarta
+tokyo,jp-40-tokyo
+ho chi min city,vn-20-hochiminh
+bangkok
+singapore
+taipei
+new york city,us-ny-newyork
+washington d.c,us-dc-washington
+san franciso,us-ca-sanfrancisco
+chicago,us-il-chicago
+tornoto
+sao paulo
+mexico city
+lima
+bogota
+rio de janeiro
+kinshasa
+lagos
+johannesburg
+london
+berlin,de-16-berlin
+paris
+barcelona
+vienna
+brussels,be-11-brussels
+athens
+cairo
+istanbul,tr-34-istanbul
+tehran,ir-26-tehran
+baghdad,iq-07-baghdad
+riyadh,sa-10-riyadh
+dubai,ae-03-dubai
+ankara,tr-68-ankara
+perth,au-08-perth
+sydney,au-02-sydney
