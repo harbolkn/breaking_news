@@ -15,19 +15,19 @@ def home():
 def data():
     endpoint = api_base+"/v3/search"
 
-	cities = [ line.split(', ')[1] for line in open('./cities.csv') ]
-	top = {}
-	for city in cities:
-		query_params = {'access_token': access_token,
-		'limit': 1,
-		'cities': city,
-		'fields': 'title,url'}
+    cities = [ line.split(', ')[1] for line in open('./cities.csv') ]
+    top = {}
+    for city in cities:
+        query_params = {'access_token': access_token,
+        'limit': 1,
+        'cities': city,
+        'fields': 'title,url'}
 
-		response = requests.get(endpoint, params= query_params)
-		data = json.loads(response.contents)
-		top[city] = [data['url'], data['title']]
+        response = requests.get(endpoint, params= query_params)
+        data = json.loads(response.contents)
+        top[city] = [data['url'], data['title']]
 
-	return jsonify(top)
+    return jsonify(top)
 
 @app.route("/city_latlon")
 def get_latlon_from_city():
@@ -43,14 +43,27 @@ def _get_latlon_from_city(city):
     j = json.loads(req.text)
     return j[0]['lat'], j[0]['lon']
 
+@app.route("/do_everything")
+def do_everything():
+    phrases = get_phrases()
+    story_ids = story_from_phrases(phrases)
+    return json.dumps(story_ids)  
+
+def get_phrases():
+    response = requests.get('https://api-ssl.bitly.com/v3/realtime/hot_phrases?access_token=' + access_token)
+    data = json.loads(response.content)
+    phrases = map(lambda(a): a["phrase"],data['data']["phrases"])
+    return phrases
+
 def story_from_phrases(phrases):
     endpoint = api_base+"/v3/story_api/story_from_phrases"
     story_ids = []
     for phrase in phrases:
         response = requests.get(endpoint, params={'access_token': access_token, 'phrases': phrase})
-        response_data = json.loads(response)
+#        print response.text
+        response_data = json.loads(response.text)
         story_ids.append(response_data['data']['story_id'])
     return story_ids
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
