@@ -48,8 +48,8 @@ def do_everything():
     phrases = get_phrases()
     story_ids = story_from_phrases(phrases)
     story_cities = get_distribution(story_ids)
-    for cities in story_cities:
-        print json.dumps(cities)
+    for i in range(0,len(story_ids)):
+        print json.dumps({'story_id':story_ids[i], 'story_cities':story_cities[i]})
 
     return #json.dumps(story_ids)  
 
@@ -73,11 +73,13 @@ def get_distribution(story_ids):
     endpoint = api_base+"/v3/story_api/distribution"
     cities_data = []
     for s_id in story_ids:
-        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id})
+        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id, 'field':'cities'})
         response_data = json.loads(response.text)
-        print response_data
-        cities_data.append(response_data['data']['cities'])
+        if response_data['data'] is not None and response_data['data']['cities'] is not None:
+            cities_data.append(response_data['data']['cities'])
+        else:
+            cities_data.append(None)
     return cities_data
 
 if __name__ == "__main__":
-    app.run()#debug=True)
+    app.run(debug=True)
