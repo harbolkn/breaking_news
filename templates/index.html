@@ -59,11 +59,13 @@
     $scope.render();
   }
   </script>
+  {% raw %}
   <div ng-controller="CityCtrl">
     <div id='output'>
       <h1>{{current_city || "test"}}</h1>
     </div>
     <div id='map'></div>
   </div>
+  {% endraw %}
 </body>
 </html>
