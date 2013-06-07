@@ -19,22 +19,18 @@
           background: #fff;
           z-index: 100;
           width: 200px;
+          text-align: center;
       }
       #output h1 {
         color: #666;
         font-size: 20px;
-        text-align: center;
       }
-      ul {
-        list-style-type: none;
-        padding:10;
-        margin:0;
-      }
+      
       a {
-        color: #ccc;
+        color: #aaa;
       }
       a:hover {
-        color: #ccc;
+        color: #aaa;
       }
    </style>
 </head>
@@ -62,13 +58,13 @@
       return $scope.cities.sort(compare);
     };
     $scope.new_color = function(){
-      var colors = ['#0F808C', '#6C8C26', '#F2A71B', '#F26A1B', '#D91818']
+      var colors = ['#0F808C', '#6C8C26', '#F2A71B', '#F26A1B', '#D91818', '#D91CC9', '#7622D9', '#2235D9']
       return colors[Math.floor(Math.random() * colors.length)];
     };
     $scope.render = function(){
       var response = [
-        { name: "Los Angeles", coordinates: [-118.2428, 34.0522], link: "http://google.com", title: "Bitly Hackathon" },
-        { name: "Washington D.C.", coordinates: [-77.03201, 38.90065], link: "http://google.com", title: "Obama" }
+        { name: "Los Angeles", coordinates: [-118.2428, 34.0522], link: "http://google.com", title: "Bitly Hackathon", summary: "Awesome shit goes here." },
+        { name: "Washington D.C.", coordinates: [-77.03201, 38.90065], link: "http://google.com", title: "Obama", summary: "Woah this summary is so awesome!" }
       ];
       var last_color = null;
       for (var i = 0; i < response.length; i++){
@@ -83,6 +79,7 @@
           properties: {
             title: response[i].name,
             article_title: response[i].title,
+            summary: response[i].summary,
             'marker-color': color,
             'marker-size': 'large',
             url: response[i].link
@@ -108,9 +105,10 @@
   <div ng-controller="CityCtrl">
     <div id='output'>
       <h1>{{current_city().properties.title}}</h1>
-      <ul>
-        <li>- <a ng-href="{{current_city().properties.url}}">{{current_city().properties.article_title}}</a></li>
-      </ul>
+      <a ng-href="{{current_city().properties.url}}">{{current_city().properties.article_title}}</a>
+      <br>
+      <br>
+      {{current_city().properties.summary}}
     </div>
     <div id='map'></div>
   </div>
