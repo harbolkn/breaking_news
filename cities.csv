@@ -1,21 +1,22 @@
 name, api_name, lat, lon
-shanghai,cn-23-shanghai
-beijing,cn-22-beijing
-tianjin,cn-28-tianjin
-delhi,in-07-delhi
-islamabad,pk-08-islamabad
-moscow,ru-48-moscow
-tokyo,jp-40-tokyo
-ho chi min city,vn-20-hochiminh
-new york city,us-ny-newyork
-washington d.c,us-dc-washington
-san franciso,us-ca-sanfrancisco
-chicago,us-il-chicago
-istanbul,tr-34-istanbul
-tehran,ir-26-tehran
-baghdad,iq-07-baghdad
-riyadh,sa-10-riyadh
-dubai,ae-03-dubai
-ankara,tr-68-ankara
-perth,au-08-perth
-sydney,au-02-sydney
+shanghai,cn-23-shanghai,31.2253441,121.4888922
+beijing,cn-22-beijing,39.9074609,116.3931621
+tianjin,cn-28-tianjin,39.1235635,117.1980785
+delhi,in-07-delhi,37.3697875,97.3595496
+islamabad,pk-08-islamabad,33.6947961,73.0645266
+moscow,ru-48-moscow,55.5805786,37.4062709
+tokyo,jp-40-tokyo,35.6800712,139.7685224
+ho chi min city,vn-20-hochiminh,10.7827445,106.6948984
+new york city,us-ny-newyork,40.7305991,-73.9865812
+washington d.c,us-dc-washington,38.8951148,-77.0363716
+san franciso,us-ca-sanfrancisco,37.7789601,-122.419199
+chicago,us-il-chicago,41.8756208,-87.6243706
+istanbul,tr-34-istanbul,41.0170578,28.9855676
+tehran,ir-26-tehran,35.6884243,51.4179604
+baghdad,iq-07-baghdad,33.3024248,44.3787992
+riyadh,sa-10-riyadh,24.6320297,46.7149069
+dubai,ae-03-dubai,25.268359,55.2963958
+ankara,tr-68-ankara,39.9272237,32.8520491
+perth,au-08-perth,-31.9527121,115.8604796
+sydney,au-02-sydney,-33.8548157,151.2164539
+london,gb-h9-london,51.5072759,-0.1276597
