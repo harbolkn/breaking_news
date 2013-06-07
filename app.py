@@ -73,7 +73,7 @@ def get_distribution(story_ids):
     endpoint = api_base+"/v3/story_api/distribution"
     cities_data = []
     for s_id in story_ids:
-        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id, 'field':'cities'})
+        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id['story_id'], 'field':'cities'})
         response_data = json.loads(response.text)
         if response_data['data'] is not None and response_data['data']['cities'] is not None:
             cities_data.append(response_data['data']['cities'])
