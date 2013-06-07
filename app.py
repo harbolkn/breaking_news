@@ -3,6 +3,7 @@ from flask import jsonify
 import simplejson as json
 import datetime
 import requests 
+import csv
 app = Flask(__name__)
 
 access_token = "bafda5b39a752043052cbec72ae9908e5e15c9d4"
@@ -13,19 +14,18 @@ def home():
 
 @app.route("/data")
 def data():
-    endpoint = api_base+"/v3/search"
-
-	cities = [ line.split(', ')[1] for line in open('./cities.csv') ]
+	endpoint = api_base+"/v3/search" 
 	top = {}
-	for city in cities:
-		query_params = {'access_token': access_token,
-		'limit': 1,
-		'cities': city,
-		'fields': 'title,url'}
 
-		response = requests.get(endpoint, params= query_params)
-		data = json.loads(response.contents)
-		top[city] = [data['url'], data['title']]
+	with open('cities.csv', 'r') as city_file:
+		reader = csv.reader(city_file, delimiter=",")
+		for line in reader:
+			query_params = {'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
+			response = requests.get(endpoint, params= query_params)
+			data = json.loads(response.content)['data']
+			if 'results' in data and len(data['results'])>0:
+				results = data['results']
+				top[line[0]] = [ results['title'], results['url']]
 
 	return jsonify(top)
 
