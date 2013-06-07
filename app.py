@@ -57,13 +57,13 @@ def get_phrases():
 
 def story_from_phrases(phrases):
     endpoint = api_base+"/v3/story_api/story_from_phrases"
-    story_ids = []
+    stories_links = []
     for phrase in phrases:
         response = requests.get(endpoint, params={'access_token': access_token, 'phrases': phrase})
 #        print response.text
         response_data = json.loads(response.text)
-        story_ids.append(response_data['data']['story_id'])
-    return story_ids
+        stories_links.append({'story_id':response_data['data']['story_id'], 'link':response_data['data']['aggregate_link'][0]})
+    return stories_links
 
 if __name__ == "__main__":
     app.run(debug=True)
