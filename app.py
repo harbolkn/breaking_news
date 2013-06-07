@@ -22,7 +22,6 @@ def data():
         for line in reader:
             query_params = {'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
             response = requests.get(endpoint, params= query_params)
-            print response.content
             data = json.loads(response.content)['data']
             if 'results' in data and len(data['results']) > 0:
                 results = data['results'][0]
