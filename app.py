@@ -6,7 +6,7 @@ import requests
 import csv
 app = Flask(__name__)
 
-access_token = "bafda5b39a752043052cbec72ae9908e5e15c9d4"
+access_token = "ece768380a5c551b5802f91a84aa2bec135457cc"
 api_base="https://api-ssl.bitly.com"
 @app.route("/")
 def home():
@@ -14,18 +14,19 @@ def home():
 
 @app.route("/data")
 def data():
-	endpoint = api_base+"/v3/search" 
-	top = {}
+    endpoint = api_base+"/v3/search" 
+    top = {"data": []}
 
-	with open('cities.csv', 'r') as city_file:
-		reader = csv.reader(city_file, delimiter=",")
-		for line in reader:
-			query_params = {'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
-			response = requests.get(endpoint, params= query_params)
-			data = json.loads(response.content)['data']
-			if 'results' in data and len(data['results'])>0:
-				results = data['results']
-				top[line[0]] = [ results['title'], results['url']]
+    with open('cities.csv', 'r') as city_file:
+        reader = csv.reader(city_file, delimiter=",")
+        for line in reader:
+            query_params = {'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
+            response = requests.get(endpoint, params= query_params)
+            print response.content
+            data = json.loads(response.content)['data']
+            if 'results' in data and len(data['results']) > 0:
+                results = data['results'][0]
+                top["data"].append({"title": results['title'], "link": results['url'], "name": line[0], "coordinates": _get_latlon_from_city(line[0])})
 
     return jsonify(top)
 
@@ -41,7 +42,7 @@ def get_latlon_from_city():
 def _get_latlon_from_city(city):
     req = requests.get('http://nominatim.openstreetmap.org?format=json&limit=1&city='+city)
     j = json.loads(req.text)
-    return j[0]['lat'], j[0]['lon']
+    return [j[0]['lon'], j[0]['lat']]
 
 @app.route("/do_everything")
 def do_everything():
