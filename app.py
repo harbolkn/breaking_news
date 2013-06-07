@@ -27,7 +27,7 @@ def data():
 				results = data['results']
 				top[line[0]] = [ results['title'], results['url']]
 
-	return jsonify(top)
+    return jsonify(top)
 
 @app.route("/city_latlon")
 def get_latlon_from_city():
@@ -43,15 +43,43 @@ def _get_latlon_from_city(city):
     j = json.loads(req.text)
     return j[0]['lat'], j[0]['lon']
 
+@app.route("/do_everything")
+def do_everything():
+    phrases = get_phrases()
+    story_ids = story_from_phrases(phrases)
+    story_cities = get_distribution(story_ids)
+    for i in range(0,len(story_ids)):
+        print json.dumps({'story_id':story_ids[i], 'story_cities':story_cities[i]})
+
+    return #json.dumps(story_ids)  
+
+def get_phrases():
+    response = requests.get('https://api-ssl.bitly.com/v3/realtime/hot_phrases?access_token=' + access_token)
+    data = json.loads(response.content)
+    phrases = map(lambda(a): a["phrase"],data['data']["phrases"])
+    return phrases
+
 def story_from_phrases(phrases):
     endpoint = api_base+"/v3/story_api/story_from_phrases"
-    story_ids = []
+    stories_links = []
     for phrase in phrases:
         response = requests.get(endpoint, params={'access_token': access_token, 'phrases': phrase})
-        response_data = json.loads(response)
-        story_id = response_data['data']['story_id']
+#        print response.text
+        response_data = json.loads(response.text)
+        stories_links.append({'story_id':response_data['data']['story_id'], 'link':response_data['data']['aggregate_link'][0]})
+    return stories_links
 
-        
+def get_distribution(story_ids):
+    endpoint = api_base+"/v3/story_api/distribution"
+    cities_data = []
+    for s_id in story_ids:
+        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id['story_id'], 'field':'cities'})
+        response_data = json.loads(response.text)
+        if response_data['data'] is not None and response_data['data']['cities'] is not None:
+            cities_data.append(response_data['data']['cities'])
+        else:
+            cities_data.append(None)
+    return cities_data
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
