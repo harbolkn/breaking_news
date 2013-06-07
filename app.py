@@ -47,7 +47,11 @@ def _get_latlon_from_city(city):
 def do_everything():
     phrases = get_phrases()
     story_ids = story_from_phrases(phrases)
-    return json.dumps(story_ids)  
+    story_cities = get_distribution(story_ids)
+    for cities in story_cities:
+        print json.dumps(cities)
+
+    return #json.dumps(story_ids)  
 
 def get_phrases():
     response = requests.get('https://api-ssl.bitly.com/v3/realtime/hot_phrases?access_token=' + access_token)
@@ -65,5 +69,15 @@ def story_from_phrases(phrases):
         stories_links.append({'story_id':response_data['data']['story_id'], 'link':response_data['data']['aggregate_link'][0]})
     return stories_links
 
+def get_distribution(story_ids):
+    endpoint = api_base+"/v3/story_api/distribution"
+    cities_data = []
+    for s_id in story_ids:
+        response = requests.get(endpoint, params={'access_token': access_token, 'story_id': s_id})
+        response_data = json.loads(response.text)
+        print response_data
+        cities_data.append(response_data['data']['cities'])
+    return cities_data
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()#debug=True)
