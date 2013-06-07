@@ -5,14 +5,15 @@ import datetime
 import requests 
 app = Flask(__name__)
 
+access_token = "bafda5b39a752043052cbec72ae9908e5e15c9d4"
+api_base="https://api-ssl.bitly.com"
 @app.route("/")
 def home():
     return render_template('index.html')
 
 @app.route("/data")
 def data():
-    access_token = "bafda5b39a752043052cbec72ae9908e5e15c9d4"
-    endpoint = "https://api-ssl.bitly.com/v3/search"
+    endpoint = api_base+"/v3/search"
 
 	cities = [ line.split(', ')[1] for line in open('./cities.csv') ]
 	top = {}
@@ -38,9 +39,19 @@ def get_latlon_from_city():
         return ","
 
 def _get_latlon_from_city(city):
-        req = requests.get('http://nominatim.openstreetmap.org?format=json&limit=1&city='+city)
-        j = json.loads(req.text)
-        return j[0]['lat'], j[0]['lon']
+    req = requests.get('http://nominatim.openstreetmap.org?format=json&limit=1&city='+city)
+    j = json.loads(req.text)
+    return j[0]['lat'], j[0]['lon']
+
+def story_from_phrases(phrases):
+    endpoint = api_base+"/v3/story_api/story_from_phrases"
+    story_ids = []
+    for phrase in phrases:
+        response = requests.get(endpoint, params={'access_token': access_token, 'phrases': phrase})
+        response_data = json.loads(response)
+        story_id = response_data['data']['story_id']
+
+        
 
 if __name__ == "__main__":
     app.run()
