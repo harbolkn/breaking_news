@@ -17,8 +17,24 @@
           right: 10px;
           padding: 10px;
           background: #fff;
-          color: #aaa;
           z-index: 100;
+          width: 200px;
+      }
+      #output h1 {
+        color: #666;
+        font-size: 20px;
+        text-align: center;
+      }
+      ul {
+        list-style-type: none;
+        padding:10;
+        margin:0;
+      }
+      a {
+        color: #ccc;
+      }
+      a:hover {
+        color: #ccc;
       }
    </style>
 </head>
@@ -27,20 +43,47 @@
 
 <script>
   function CityCtrl($scope, $http){
-    $scope.current_city = "Los Angeles";
+    $scope.current_city_id = 0;
+
+    $scope.current_city = function(){
+      return $scope.cities[$scope.current_city_id]
+    }
+
     $scope.map = L.mapbox.map('map', 'examples.map-20v6611k').setView([39.12367, -76.81229], 9);
     $scope.cities = [];
+    $scope.group = function(){
+      function compare(a,b) {
+        if (a.properties.article_title < b.properties.article_title)
+           return -1;
+        if (a.properties.article_title > b.properties.article_title)
+          return 1;
+        return 0;
+      }
+      return $scope.cities.sort(compare);
+    };
+    $scope.new_color = function(){
+      var colors = ['#0F808C', '#6C8C26', '#F2A71B', '#F26A1B', '#D91818']
+      return colors[Math.floor(Math.random() * colors.length)];
+    };
     $scope.render = function(){
       var response = [
-        { name: "Los Angeles", coordinates: [-118.2428, 34.0522], link: "http://google.com" },
-        { name: "Washington D.C.", coordinates: [-77.03201, 38.90065], link: "http://google.com" }
+        { name: "Los Angeles", coordinates: [-118.2428, 34.0522], link: "http://google.com", title: "Bitly Hackathon" },
+        { name: "Washington D.C.", coordinates: [-77.03201, 38.90065], link: "http://google.com", title: "Obama" }
       ];
+      var last_color = null;
       for (var i = 0; i < response.length; i++){
+        if (last_color == null || response[i].properties.article_title != response[i-1].properties.article_title){
+          var color = $scope.new_color();
+        } else {
+          var color = last_color;
+        }
         $scope.cities.push({
+          id: i,
           type: 'Feature',
           properties: {
             title: response[i].name,
-            'marker-color': '#f00',
+            article_title: response[i].title,
+            'marker-color': color,
             'marker-size': 'large',
             url: response[i].link
           },
@@ -49,11 +92,13 @@
             coordinates: response[i].coordinates
           }
         });
+        $scope.cities.sort();
       }
       $scope.map.markerLayer.setGeoJSON({ type: 'FeatureCollection', features: $scope.cities });
-      $scope.map.markerLayer.on('click', function(e) {
+      $scope.map.markerLayer.on('click onmouseover', function(e) {
         e.layer.unbindPopup();
-        window.open(e.layer.feature.properties.url);
+        $scope.current_city_id = e.layer.feature.id;
+        $scope.$apply();
       });
     };
     $scope.render();
@@ -62,7 +107,10 @@
   {% raw %}
   <div ng-controller="CityCtrl">
     <div id='output'>
-      <h1>{{current_city || "test"}}</h1>
+      <h1>{{current_city().properties.title}}</h1>
+      <ul>
+        <li>- <a ng-href="{{current_city().properties.url}}">{{current_city().properties.article_title}}</a></li>
+      </ul>
     </div>
     <div id='map'></div>
   </div>
