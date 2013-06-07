@@ -49,9 +49,8 @@ def story_from_phrases(phrases):
     for phrase in phrases:
         response = requests.get(endpoint, params={'access_token': access_token, 'phrases': phrase})
         response_data = json.loads(response)
-        story_id = response_data['data']['story_id']
-
-        
+        story_ids.append(response_data['data']['story_id'])
+    return story_ids
 
 if __name__ == "__main__":
     app.run()
