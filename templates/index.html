@@ -15,45 +15,35 @@
 <body>
 <div id='map'></div>
 <script>
-var map = L.mapbox.map('map', 'examples.map-20v6611k').setView([39.12367, -76.81229], 9);
-
-// The GeoJSON representing the two point features
-var geoJson = {
-    type: 'FeatureCollection',
-    features: [{
-        type: 'Feature',
-        properties: {
-            title: 'Washington, D.C.',
-            'marker-color': '#f00',
-            'marker-size': 'large',
-            url: 'http://en.wikipedia.org/wiki/Washington,_D.C.'
-        },
-        geometry: {
-            type: 'Point',
-            coordinates: [-77.03201, 38.90065]
-        }
-    },
-    {
-        type: 'Feature',
-        properties: {
-            title: 'Baltimore, MD',
-            'marker-color': '#f00',
-            'marker-size': 'large',
-            url: 'http://en.wikipedia.org/wiki/Baltimore'
-        },
-        geometry: {
-            type: 'Point',
-            coordinates: [-76.60767, 39.28755]
-        }
-    }]
-};
-
-// Pass features and a custom factory function to the map
-map.markerLayer.setGeoJSON(geoJson);
-map.markerLayer.on('click', function(e) {
-    e.layer.unbindPopup();
-    window.open(e.layer.feature.properties.url);
-});
+var app = {};
+app.map = L.mapbox.map('map', 'examples.map-20v6611k').setView([39.12367, -76.81229], 9);
+app.cities = [];
+app.render = function(){
+  var response = [
+    { name: "Los Angeles", coordinates: [-118.2428, 34.0522], link: "http://google.com" }
+  ];
+  for (var i = 0; i < response.length; i++){
+    app.cities.push({
+      type: 'Feature',
+      properties: {
+        title: response[i].name,
+        'marker-color': '#f00',
+        'marker-size': 'large',
+        url: response[i].link
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: response[i].coordinates
+      }
+    });
+  }
+  app.map.markerLayer.setGeoJSON({ type: 'FeatureCollection', features: app.cities });
+  app.map.markerLayer.on('click', function(e) {
+      e.layer.unbindPopup();
+      window.open(e.layer.feature.properties.url);
+  });
+}
+app.render()
 </script>
 </body>
 </html>
