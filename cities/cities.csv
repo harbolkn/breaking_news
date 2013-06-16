@@ -1,0 +1,36 @@
+name,api_name,lat,lon
+Shanghai,cn-23-shanghai,31.2253441,121.4888922
+Beijing,cn-22-beijing,39.9074609,116.3931621
+Tianjin,cn-28-tianjin,39.1235635,117.1980785
+Delhi,in-07-delhi,37.3697875,97.3595496
+Islamabad,pk-08-islamabad,33.6947961,73.0645266
+Moscow,ru-48-moscow,55.5805786,37.4062709
+Seoul,kr-11-seoul,37.566535,126.977969
+Tokyo,jp-40-tokyo,35.6800712,139.7685224
+Ho Chi Min City,vn-20-hochiminh,10.7827445,106.6948984
+Bangkok,th-42-bangkok,13.727896,100.524123
+Washington D.C,us-dc-washington,38.8951148,-77.0363716
+Chicago,us-il-chicago,41.8756208,-87.6243706
+Istanbul,tr-34-istanbul,41.0170578,28.9855676
+Tehran,ir-26-tehran,35.6884243,51.4179604
+Baghdad,iq-07-baghdad,33.3024248,44.3787992
+Riyadh,sa-10-riyadh,24.6320297,46.7149069
+Dubai,ae-03-dubai,25.268359,55.2963958
+Ankara,tr-68-ankara,39.9272237,32.8520491
+Perth,au-08-perth,-31.9527121,115.8604796
+Sydney,au-02-sydney,-33.8548157,151.2164539
+London,gb-h9-london,51.5072759,-0.1276597
+Denver,us-co-denver,39.737567,-104.984718
+Seattle,us-wa-seattle,47.606209,-122.332071
+Atlanta,us-ga-atlanta,33.748995,-84.387982
+Miami,us-fl-miami,25.788969,-80.226439
+Boston,us-ma-boston,42.358431,-71.059773
+Toronto,ca-on-toronto,43.653226,-79.383184
+Vancouver,ca-bc-vancouver,49.261226,-123.113927
+Quebec,ca-qc-quebec,52.939916,-73.549136
+Paris,fr-a8-paris,48.856614,2.352222
+Munich,de-02-munich,48.136607,11.577085
+Dublin,ie-07-dublin,53.349805,-6.26031
+Cairo,eg-11-cairo,30.044420,31.235712
+Lagos,ng-05-lagos,6.441158,3.417977
+Casablanca,ma-07-casablanca,33.533333,-7.58333

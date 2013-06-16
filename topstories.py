@@ -1,26 +1,40 @@
-import csv
-import simplejson as json
-import requests
+import globals as gl
 
-access_token = "bafda5b39a752043052cbec72ae9908e5e15c9d4"
-api_base = "https://api-ssl.bitly.com"
 
-def data():
-	endpoint = api_base+"/v3/search"
-	top = {}
-	with open('cities.csv', 'r') as city_file:
-		reader = csv.reader(city_file, delimiter=',')
-		for line in reader:
-			if line[1] != 'api_name': 
-   				query_params={'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
-				response=requests.get(endpoint, params= query_params)
-				data = json.loads(response.content)['data']
-				if 'results' in data and len(data['results'])>0:
-					print data['results']
-					results = data['results'][0]
-					top[line[0]] = [ results['title'] , results['url']]
+######
+#ToDo:
+#  Add get phrase for new story
+######
+def update_city(city_id):
+    endpoint = gl.api_base+"/v3/search"
 
-	return jsonify(top)
+    query_params = {'access_token': gl.access_token, 'limit':1,
+            'cities': city_id, 'fields': 'title,url,summaryText'}
 
-if __name__ == '__main__':
-	print data()
+    response = requests.get(endpoint, params= query_params)
+    data = json.loads(response.content)['data']
+
+    if 'results' in data and len(data['results']) > 0:
+        results = data['results'][0]
+        return {'city_id':city_id, 'title': results['title'], 'link':results['url'], 'summary':results['summaryText']}
+    else:
+        return -1
+
+
+######
+#ToDo:
+#  Find a more efficient way of doing this
+######
+def check_timer(cur, prev):
+    if cur.hour == prev.hour:
+        if cur.minute - prev.minute >= 10:
+            return 1
+        else:
+            return 0
+    elif cur.hour > prev.hour:
+        if (cur.minute + 60) - prev.minute >= 10:
+            return 1
+        else:
+            return 0
+    else:
+        return -1

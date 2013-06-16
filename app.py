@@ -4,9 +4,10 @@ import simplejson as json
 import datetime
 import requests 
 import csv
+import settings
 app = Flask(__name__)
 
-access_token = "ece768380a5c551b5802f91a84aa2bec135457cc"
+access_token = settings.access_token
 api_base="https://api-ssl.bitly.com"
 @app.route("/")
 def home():
@@ -17,7 +18,7 @@ def data():
     endpoint = api_base+"/v3/search" 
     top = {"data": []}
 
-    with open('cities.csv', 'r') as city_file:
+    with open('cities/cities.csv', 'r') as city_file:
         reader = csv.reader(city_file, delimiter=",")
         for line in reader:
             query_params = {'access_token': access_token, 'limit': 1, 'cities': line[1], 'fields': 'title,url'}
